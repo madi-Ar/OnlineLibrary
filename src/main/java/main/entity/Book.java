@@ -24,10 +24,6 @@ public class Book {
     @Column(name = "year_of_publication", nullable = false)
     private int year;
 
-    @ManyToMany(mappedBy = "books")
-    private List<User> users;
-
-    @ManyToOne
-    @JoinColumn(name = "book_store_id")
-    private BookStore bs;
+    @OneToMany(mappedBy = "book")
+    private List<BorrowRecord> records;
 }

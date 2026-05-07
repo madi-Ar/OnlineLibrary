@@ -24,13 +24,7 @@ public class User {
     @Column
     private Boolean gender;
 
-    @ManyToMany
-    @JoinTable(name = "user_book",
-                joinColumns = @JoinColumn(name = "user_id"),
-                inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> books;
-
-    @ManyToOne
-    @JoinColumn(name = "book_store_id")
-    private BookStore bookStore;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
+    private LibraryCard card;
 }
