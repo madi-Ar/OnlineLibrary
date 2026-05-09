@@ -1,5 +1,6 @@
 package main.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import main.dto.BorrowRecordDto;
 import main.service.BorrowRecordService;
@@ -16,7 +17,7 @@ public class BorrowRecordController {
     private final BorrowRecordService recordService;
 
     @PostMapping
-    public ResponseEntity<BorrowRecordDto> create(@RequestBody BorrowRecordDto recordDto){
+    public ResponseEntity<BorrowRecordDto> create(@Valid @RequestBody BorrowRecordDto recordDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(recordService.create(recordDto));
     }
 

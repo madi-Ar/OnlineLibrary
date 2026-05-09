@@ -1,5 +1,9 @@
 package main.dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import main.entity.Book;
@@ -12,9 +16,19 @@ import java.util.List;
 @Setter
 public class BookDto {
     private Long id;
+
+    @NotBlank(message = "Title must not be null")
+    @Size(min = 2, max = 100, message = "length must be 2 and 100 characters")
     private String title;
+
+    @NotBlank(message = "Author must not be null")
+    @Size(min = 2, max = 100, message = "length must be 2 and 100 characters")
     private String author;
+
+    @Min(value = 1000,message = "Minimum year - 1000")
+    @Max(value = 2026, message = "Maximum year - 2026")
     private int year;
+
     private List<Long> recordIds;
 
     public static BookDto mapToDto(Book book){

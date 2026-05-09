@@ -1,6 +1,7 @@
 package main.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import main.dto.LibraryCardDto;
 import main.entity.LibraryCard;
@@ -19,7 +20,7 @@ public class LibraryCardController {
     private final LibraryCardService cardService;
 
     @PostMapping
-    public ResponseEntity<LibraryCardDto> create(@RequestBody LibraryCardDto cardDto){
+    public ResponseEntity<LibraryCardDto> create(@Valid @RequestBody LibraryCardDto cardDto){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cardService.create(cardDto));
     }
