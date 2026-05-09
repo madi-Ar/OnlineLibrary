@@ -22,7 +22,10 @@ public class User {
     private int age;
 
     @Column
-    private Boolean gender;
+    private String gender;
+
+    @Column
+    private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
