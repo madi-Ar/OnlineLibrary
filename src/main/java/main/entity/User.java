@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import main.Role;
 
 import java.util.List;
 
@@ -25,8 +26,15 @@ public class User {
     @Column
     private String gender;
 
-    @Column
+    @Column(unique = true)
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role userRole = Role.USER;
+
+    @Column(nullable = false)
+    private String password;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
