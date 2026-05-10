@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import main.dto.BookDto;
 import main.entity.Book;
+import main.exceptions.BookException;
 import main.repository.BookRepository;
 import main.repository.BorrowRecordRepository;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class BookService {
     @Transactional
     public BookDto changeTitle(Long id, String title){
         Book book = bookRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new BookException(id));
         book.setTitle(title);
         return BookDto.mapToDto(bookRepository.save(book));
     }
@@ -51,7 +52,7 @@ public class BookService {
     @Transactional
     public BookDto changeAuthor(Long id, String author){
         Book book = bookRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new BookException(id));
         book.setAuthor(author);
         return BookDto.mapToDto(bookRepository.save(book));
     }
@@ -59,7 +60,7 @@ public class BookService {
     @Transactional
     public BookDto changeYear(Long id, int year){
         Book book = bookRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new BookException(id));
         book.setYear(year);
         return BookDto.mapToDto(bookRepository.save(book));
     }

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import main.dto.LibraryCardDto;
 import main.entity.LibraryCard;
 import main.entity.User;
+import main.exceptions.LibraryCardException;
+import main.exceptions.UserException;
 import main.repository.BorrowRecordRepository;
 import main.repository.LibraryCardRepository;
 import main.repository.UserRepository;
@@ -28,8 +30,8 @@ public class LibraryCardService {
     public LibraryCardDto create(LibraryCardDto cardDto){
         LibraryCard card = LibraryCardDto.mapToCardEntity(cardDto);
         if(cardDto.getUserId() != null){
-            card.setUser(userRepository.findById(cardDto.getId())
-                    .orElseThrow(EntityNotFoundException::new));
+            card.setUser(userRepository.findById(cardDto.getUserId())
+                    .orElseThrow(() -> new UserException(cardDto.getUserId())));
         }
         if(cardDto.getRecordIds() != null){
             card.setBorrowRecords(recordRepository.findAllById(cardDto.getRecordIds()));
@@ -52,7 +54,7 @@ public class LibraryCardService {
     @Transactional
     public LibraryCardDto changeDateOfCreation(Long id){
         LibraryCard card = cardRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new LibraryCardException(id));
         card.setDateOfCreation(LocalDate.now());
         return LibraryCardDto.mapToCardDto(cardRepository.save(card));
     }

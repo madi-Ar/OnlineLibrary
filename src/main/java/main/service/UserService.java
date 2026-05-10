@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import main.dto.UserDto;
 import main.entity.LibraryCard;
 import main.entity.User;
-import main.repository.LibraryCardRepository;
+import main.exceptions.UserException;
 import main.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final LibraryCardRepository libraryCardRepository;
-    private final LibraryCardService cardService;
 
     @Transactional
     public UserDto create(UserDto userDto){
@@ -38,15 +36,16 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<UserDto> findById(Long id){
+    public UserDto findById(Long id){
         return userRepository.findById(id)
-                .map(UserDto::mapToUserDto);
+                .map(UserDto::mapToUserDto)
+                .orElseThrow(() -> new UserException(id));
     }
 
     @Transactional
     public UserDto changeName(Long id, String name){
         User user = userRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new UserException(id));
         user.setUsername(name);
         return UserDto.mapToUserDto(userRepository.save(user));
     }
@@ -54,8 +53,16 @@ public class UserService {
     @Transactional
     public UserDto changeAge(Long id, int age){
         User user = userRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new UserException(id));
         user.setAge(age);
+        return UserDto.mapToUserDto(userRepository.save(user));
+    }
+
+    @Transactional
+    public UserDto changeEmail(Long id, String email){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserException(id));
+        user.setEmail(email);
         return UserDto.mapToUserDto(userRepository.save(user));
     }
 

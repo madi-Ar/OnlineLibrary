@@ -5,22 +5,25 @@ import lombok.Setter;
 import main.entity.BorrowRecord;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
 public class BorrowRecordDto {
     private Long id;
     private Long cardId;
-    private Long BookId;
+    private Long bookId;
     private LocalDate borrowDate;
     private LocalDate returnDate;
 
     public static BorrowRecordDto mapToRecordDto(BorrowRecord record){
         BorrowRecordDto recordDto = new BorrowRecordDto();
         recordDto.setId(record.getId());
-        recordDto.setCardId(record.getCard().getId());
-        recordDto.setBookId(record.getBook().getId());
+        if(record.getCard() != null) {
+            recordDto.setCardId(record.getCard().getId());
+        }
+        if(record.getBook() != null) {
+            recordDto.setBookId(record.getBook().getId());
+        }
         recordDto.setBorrowDate(record.getBorrowDate());
         recordDto.setReturnDate(record.getBorrowDate().plusWeeks(2));
         return recordDto;

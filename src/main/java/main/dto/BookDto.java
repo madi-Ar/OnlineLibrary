@@ -33,6 +33,7 @@ public class BookDto {
 
     public static BookDto mapToDto(Book book){
         BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
         bookDto.setTitle(book.getTitle());
         bookDto.setAuthor(book.getAuthor());
         bookDto.setYear(book.getYear());

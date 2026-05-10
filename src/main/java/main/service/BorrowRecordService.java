@@ -1,9 +1,11 @@
 package main.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import main.dto.BorrowRecordDto;
 import main.entity.BorrowRecord;
+import main.exceptions.BookException;
+import main.exceptions.BorrowRecordException;
+import main.exceptions.LibraryCardException;
 import main.repository.BookRepository;
 import main.repository.BorrowRecordRepository;
 import main.repository.LibraryCardRepository;
@@ -27,11 +29,11 @@ public class BorrowRecordService {
         BorrowRecord record = BorrowRecordDto.mapToRecordEntity(recordDto);
         if(recordDto.getCardId() != null){
             record.setCard(cardRepository.findById(recordDto.getCardId())
-                    .orElseThrow(EntityNotFoundException::new));
+                    .orElseThrow(() -> new LibraryCardException(recordDto.getCardId())));
         }
         if (recordDto.getBookId()!=null){
             record.setBook(bookRepository.findById(recordDto.getBookId())
-                    .orElseThrow(EntityNotFoundException::new));
+                    .orElseThrow(() -> new BookException(recordDto.getBookId())));
         }
         return BorrowRecordDto.mapToRecordDto(recordRepository.save(record));
     }
@@ -51,7 +53,7 @@ public class BorrowRecordService {
     @Transactional
     public BorrowRecordDto changeBorrowDate(Long id){
         BorrowRecord record = recordRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new BorrowRecordException(id));
         record.setBorrowDate(LocalDate.now());
         recordRepository.save(record);
         return BorrowRecordDto.mapToRecordDto(record);
