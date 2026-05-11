@@ -17,7 +17,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler({BookException.class, BorrowRecordException.class,
-    LibraryCardException.class, UserException.class, EntityNotFoundException.class})
+    LibraryCardException.class, UserException.class, EmployeeException.class,EntityNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(Exception ex, HttpServletRequest request){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(404, "Not found", ex.getMessage(), request.getRequestURI(), null));
