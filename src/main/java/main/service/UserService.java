@@ -2,10 +2,13 @@ package main.service;
 
 import lombok.RequiredArgsConstructor;
 import main.dto.UserDto;
+import main.dto.formDto.UserFormDto;
 import main.entity.LibraryCard;
 import main.entity.User;
 import main.exceptions.UserException;
+import main.mapper.UserMapper;
 import main.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +20,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserDto create(UserDto userDto){
+    public UserDto create(UserFormDto formDto){
         LibraryCard card = new LibraryCard();
         card.setDateOfCreation(LocalDate.now());
-        User user = UserDto.mapToUserEntity(userDto);
+        User user = new User();
+        String encodePassword = passwordEncoder.encode(formDto.getPassword());
+        formDto.setPassword(encodePassword);
+        userMapper.mapUserFromFormDto(formDto, user);
         user.setCard(card);
         return UserDto.mapToUserDto(userRepository.save(user));
     }

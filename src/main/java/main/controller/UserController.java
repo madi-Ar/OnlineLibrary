@@ -19,11 +19,6 @@ import java.util.List;
 public class UserController {
     private final UserService service;
 
-    @PostMapping
-    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto userDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(userDto));
-    }
-
     @GetMapping()
     public ResponseEntity<List<UserDto>> findAll(){
         return ResponseEntity.ok().body(service.findAll());
