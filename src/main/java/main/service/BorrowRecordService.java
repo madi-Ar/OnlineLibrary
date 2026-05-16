@@ -26,7 +26,7 @@ public class BorrowRecordService {
 
     @Transactional
     public BorrowRecordDto create(BorrowRecordDto recordDto){
-        BorrowRecord record = BorrowRecordDto.mapToRecordEntity(recordDto);
+        BorrowRecord record = BorrowRecordDto.mapToRecordEntity();
         if(recordDto.getCardId() != null){
             record.setCard(cardRepository.findById(recordDto.getCardId())
                     .orElseThrow(() -> new LibraryCardException(recordDto.getCardId())));

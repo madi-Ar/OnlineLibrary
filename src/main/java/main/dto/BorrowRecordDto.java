@@ -29,7 +29,7 @@ public class BorrowRecordDto {
         return recordDto;
     }
 
-    public static BorrowRecord mapToRecordEntity(BorrowRecordDto recordDto){
+    public static BorrowRecord mapToRecordEntity(){
         BorrowRecord record = new BorrowRecord();
         record.setBorrowDate(LocalDate.now());
         return record;

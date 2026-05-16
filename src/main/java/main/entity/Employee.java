@@ -1,10 +1,8 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import main.Role;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,12 +10,9 @@ import java.util.List;
 @Table(name = "employees")
 @Getter
 @Setter
-@NoArgsConstructor
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@ToString(exclude = "records")
+@EqualsAndHashCode(exclude = "records", callSuper = false)
+public class Employee extends Person{
     @Column(nullable = false, name = "first_name")
     private String firstName;
 
@@ -27,25 +22,11 @@ public class Employee {
     @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
-
-    @Column(nullable = false)
-    private String password;
-
     @OneToMany(mappedBy = "issuedBy")
+    @JsonIgnore
     private List<BorrowRecord> records;
 
-    public Employee(String firstName, String lastName, String phone, String email, Role role, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.role = role;
-        this.password = password;
+    public Employee() {
+        super();
     }
 }

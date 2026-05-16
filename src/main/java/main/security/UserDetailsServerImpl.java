@@ -2,7 +2,6 @@ package main.security;
 
 import lombok.RequiredArgsConstructor;
 import main.entity.User;
-import main.exceptions.UserException;
 import main.repository.UserRepository;
 import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,10 +18,10 @@ import java.util.Set;
 public class UserDetailsServerImpl implements UserDetailsService {
     private final UserRepository userRepository;
     @Override
-    public UserDetails loadUserByUsername(@NonNull String username) throws UserException {
+    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmailIgnoreCase(username)
-                .orElseThrow(() -> new UserException("User with email: "+username+" not found"));
-        Set<GrantedAuthority> roles = Collections.singleton(user.getUserRole().toAuthority());
+                .orElseThrow(() -> new UsernameNotFoundException("User with email: "+username+" not found"));
+        Set<GrantedAuthority> roles = Collections.singleton(user.getRole().toAuthority());
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), roles);
     }
 }

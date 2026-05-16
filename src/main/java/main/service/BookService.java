@@ -1,6 +1,5 @@
 package main.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import main.dto.BookDto;
 import main.entity.Book;

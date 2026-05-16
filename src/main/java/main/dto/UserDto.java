@@ -3,16 +3,11 @@ package main.dto;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import main.entity.Book;
 import main.entity.User;
-
-import java.util.List;
 
 @Getter
 @Setter
-public class UserDto {
-    private Long id;
-
+public class UserDto extends PersonDto{
     @NotBlank(message = "Name should not be null or empty")
     @Size(min = 2,max = 15, message = "Name must be between 2 and 15 characters")
     private String username;
@@ -23,10 +18,6 @@ public class UserDto {
 
     @Pattern(regexp = "man|woman", message = "Gender must be man or woman")
     private String gender;
-
-    @NotBlank(message = "email should not be null or empty")
-    @Email(message = "not valid email")
-    private String email;
 
     private Long cardId;
 
@@ -41,14 +32,5 @@ public class UserDto {
             userDto.setCardId(user.getCard().getId());
         }
         return userDto;
-    }
-
-    public static User mapToUserEntity(UserDto userDto){
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setAge(userDto.getAge());
-        user.setGender(userDto.getGender());
-        user.setEmail(userDto.getEmail());
-        return user;
     }
 }

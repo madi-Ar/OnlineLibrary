@@ -1,10 +1,8 @@
 package main.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import main.dto.LibraryCardDto;
 import main.entity.LibraryCard;
-import main.entity.User;
 import main.exceptions.LibraryCardException;
 import main.exceptions.UserException;
 import main.repository.BorrowRecordRepository;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

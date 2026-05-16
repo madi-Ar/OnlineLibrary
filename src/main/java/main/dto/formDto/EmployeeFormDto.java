@@ -7,8 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import main.Role;
-import main.entity.Employee;
 
 @Getter
 @Setter
@@ -39,14 +37,4 @@ public class EmployeeFormDto {
     @Size(min = 6, message = "Password should be at least 6 characters")
     private String password;
 
-    public static Employee mapToEntity(EmployeeFormDto formDto){
-        return new Employee(
-                formDto.firstName,
-                formDto.lastName,
-                formDto.phone,
-                formDto.email,
-                Role.valueOf(formDto.role.toUpperCase()),
-                formDto.password
-        );
-    }
 }

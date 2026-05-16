@@ -1,22 +1,16 @@
 package main.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import main.Role;
-
-import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class User extends Person{
     @Column(nullable = false)
     private String username;
 
@@ -26,17 +20,20 @@ public class User {
     @Column
     private String gender;
 
-    @Column(unique = true)
-    private String email;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role userRole = Role.USER;
-
-    @Column(nullable = false)
-    private String password;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
+    @JsonManagedReference
     private LibraryCard card;
+
+    public User(String email, Role role, String password, String username, int age, String gender, LibraryCard card) {
+        super(email, role, password);
+        this.username = username;
+        this.age = age;
+        this.gender = gender;
+        this.card = card;
+    }
+
+    public User() {
+        super();
+    }
 }

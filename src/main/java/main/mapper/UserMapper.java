@@ -9,5 +9,5 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring",
 nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserMapper {
-    public User mapUserFromFormDto(UserFormDto formDto, @MappingTarget User user);
+    void mapUserFromFormDto(UserFormDto formDto, @MappingTarget User user);
 }
