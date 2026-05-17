@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import main.entity.User;
 import main.repository.UserRepository;
 import org.jspecify.annotations.NonNull;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.Set;
 
 @Component
+@Primary
 @RequiredArgsConstructor
 public class UserDetailsServerImpl implements UserDetailsService {
     private final UserRepository userRepository;

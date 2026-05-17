@@ -43,8 +43,6 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").hasAnyRole("EMPLOYEE", "ADMIN")
                         .anyRequest().authenticated()
                 )
-                .authenticationProvider(userAuthenticationProvider(userDetailsServer, passwordEncoder()))
-                .authenticationProvider(employeeAuthenticationProvider(employeeDetailsService, passwordEncoder()))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -68,16 +66,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider userProvider(UserDetailsServerImpl userDetailsServer){
-        return new DaoAuthenticationProvider(userDetailsServer);
-    }
-
-    @Bean
-    public DaoAuthenticationProvider employeeProvider(){
-        return new DaoAuthenticationProvider(employeeDetailsService);
     }
 
     @Bean

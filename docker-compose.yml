@@ -1,0 +1,32 @@
+services:
+  library-db:
+    image: postgres:15
+    container_name: library-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sample_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sample_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app:
+    build: .
+    container_name: spring-app
+    depends_on:
+      library-db:
+          condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://library-db:5432/sample_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8081:8081"
+
+volumes:
+  postgres_data:
