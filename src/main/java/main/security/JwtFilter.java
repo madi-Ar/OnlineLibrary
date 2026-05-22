@@ -20,8 +20,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserDetailsServerImpl userDetailsService;
-    private final EmployeeDetailsServiceImpl employeeDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -50,12 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 && SecurityContextHolder.getContext().getAuthentication() == null
                 && jwtUtil.validateToken(token)) {
 
-            UserDetails userDetails;
-            try {
-                userDetails = userDetailsService.loadUserByUsername(email);
-            } catch (Exception ex) {
-                userDetails = employeeDetailsService.loadUserByUsername(email);
-            }
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(

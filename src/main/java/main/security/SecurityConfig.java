@@ -20,8 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
-    private final UserDetailsServerImpl userDetailsServer;
-    private final EmployeeDetailsServiceImpl employeeDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
@@ -30,17 +28,6 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/registration", "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                        .requestMatchers( "/books/**").hasAnyRole("EMPLOYEE", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/records/*").hasAnyRole("USER","EMPLOYEE","ADMIN")
-                        .requestMatchers("/records/**").hasAnyRole("EMPLOYEE", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("EMPLOYEE", "ADMIN")
-                        .requestMatchers("/employees/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/cards/*").hasAnyRole("USER","EMPLOYEE","ADMIN")
-                        .requestMatchers("/cards/**").hasAnyRole("EMPLOYEE", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/users/*").hasAnyRole("USER","EMPLOYEE","ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/users/*").hasAnyRole("USER","EMPLOYEE","ADMIN")
-                        .requestMatchers("/users/**").hasAnyRole("EMPLOYEE", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
@@ -48,20 +35,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider userAuthenticationProvider(UserDetailsServerImpl userDetailsServerImpl,
-                                                                PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsServerImpl);
+    public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService customUserDetailsService,
+                                                            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
 
-    @Bean
-    public DaoAuthenticationProvider employeeAuthenticationProvider(EmployeeDetailsServiceImpl employeeDetailsServiceImpl,
-                                                                    PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(employeeDetailsServiceImpl);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder(){

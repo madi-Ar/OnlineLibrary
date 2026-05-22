@@ -10,8 +10,6 @@ import java.util.List;
 @Table(name = "employees")
 @Getter
 @Setter
-@ToString(exclude = "records")
-@EqualsAndHashCode(exclude = "records", callSuper = false)
 public class Employee extends Person{
     @Column(nullable = false, name = "first_name")
     private String firstName;
@@ -21,10 +19,6 @@ public class Employee extends Person{
 
     @Column(nullable = false, unique = true)
     private String phone;
-
-    @OneToMany(mappedBy = "issuedBy")
-    @JsonIgnore
-    private List<BorrowRecord> records;
 
     public Employee() {
         super();

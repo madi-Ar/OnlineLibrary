@@ -25,9 +25,4 @@ public class BorrowRecord {
 
     @Column
     private LocalDate borrowDate;
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    @JsonIgnore
-    private Employee issuedBy;
 }

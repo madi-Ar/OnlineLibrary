@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import main.dto.formDto.UserFormDto;
 import main.dto.securityDto.AuthDto;
+import main.dto.securityDto.JwtResponce;
 import main.dto.securityDto.LoginDto;
 import main.service.SecurityService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class SecurityController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginDto login){
+    public ResponseEntity<JwtResponce> login(@Valid @RequestBody LoginDto login){
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(securityService.login(login));
