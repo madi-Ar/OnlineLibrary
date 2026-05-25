@@ -29,7 +29,7 @@ UPDATE users SET card_id = 1 WHERE id = 1;
 UPDATE users SET card_id = 2 WHERE id = 2;
 
 -- Добавляем записи о выдаче книг
-INSERT INTO borrow_record (card_id, book_id, borrow_date, employee_id)
+INSERT INTO borrow_record (card_id, book_id, borrow_date)
 VALUES
-    (1, 1, '2026-05-10', 1),
-    (2, 2, '2026-05-11', 2);
+    (1, 1, '2026-05-10'),
+    (2, 2, '2026-05-11');
